@@ -1,0 +1,121 @@
+#include <SoftwareSerial.h>
+SoftwareSerial bt(13,12);//Rx ,Tx
+#define IN1 3
+#define IN2 4
+#define IN3 5
+#define IN4 6
+
+//----------------- Directions Pins
+#define ENA 9
+#define ENB 10
+//----------------- Speed Motor Pins
+
+int _speed = 200;
+
+
+void setup()
+{
+  Serial.begin(9600); 
+  bt.begin(9600);
+  
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT); 
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  
+
+}
+char val;
+void loop() {
+  if (bt.available()) { 
+  val = bt.read(); 
+  Serial.println(val); 
+
+  if (val == 'F')
+    {
+      _stop();
+      Forward(); 
+    }
+   if(val == 'L')
+    {
+      _stop(); 
+      Left(); 
+    }
+   
+  if (val == 'B')
+    {
+      _stop(); 
+      Backward();
+    }
+  if(val == 'R')
+    {
+      _stop(); 
+      Right(); 
+    }
+    if (val == 'S') 
+      _stop();
+    
+  }
+}
+  
+void Forward() { 
+  // _stop();
+
+  
+ digitalWrite(IN1, 0);
+ digitalWrite(IN2, 1);
+ digitalWrite(IN3, 0); 
+ digitalWrite(IN4, 1);
+ analogWrite(ENA, _speed); 
+ analogWrite(ENB, _speed); 
+ //delay(2000);
+}
+void Backward()
+{
+ 
+  digitalWrite(IN1, 1);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 1);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, _speed);
+  analogWrite(ENB, _speed);
+ // delay(2000);
+} 
+void Right() { 
+ 
+  
+ digitalWrite(IN1, 1); 
+ digitalWrite(IN2, 0); 
+ digitalWrite(IN3, 0); 
+ digitalWrite(IN4, 1); 
+ analogWrite(ENA, _speed); 
+ analogWrite(ENB, _speed);
+ //delay(2000);
+  
+}
+void Left() { 
+  
+  
+ digitalWrite(IN1, 0); 
+ digitalWrite(IN2, 1); 
+ digitalWrite(IN3, 1);
+ digitalWrite(IN4, 0); 
+ analogWrite(ENA, _speed); 
+ analogWrite(ENB, _speed);
+ //delay(2000);
+
+ }
+ void _stop()
+{
+ 
+  digitalWrite(IN1, 0);
+  digitalWrite(IN2, 0);
+  digitalWrite(IN3, 0);
+  digitalWrite(IN4, 0);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+  //delay(2000);
+  
+}
